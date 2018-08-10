@@ -8,11 +8,14 @@ version '1.0-SNAPSHOT'
 mainClassName = 'de.randomerror.cocktails.identity.pi.AppKt'
 
 repositories {
-    mavenCentral()
+    jcenter()
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    compile 'com.github.kittinunf.fuel:fuel:1.15.0'
+    compile 'com.github.kittinunf.fuel:fuel-gson:1.15.0'
+    compile 'com.pi4j:pi4j-core:1.1'
 }
 
 compileKotlin {

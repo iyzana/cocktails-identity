@@ -8,7 +8,7 @@ version '1.0-SNAPSHOT'
 mainClassName = 'de.randomerror.cocktails.identity.backend.AppKt'
 
 repositories {
-    mavenCentral()
+    jcenter()
 }
 
 dependencies {
