@@ -1,0 +1,56 @@
+plugins {
+  id 'base'
+  id 'com.moowork.node' version '1.2.0'
+}
+
+node {
+  version = '10.8.0'
+  download = 'true'
+}
+
+assemble.dependsOn yarn_build
+check.dependsOn yarn_test
+clean.dependsOn yarn_clean
+
+task run {
+  dependsOn yarn_start
+}
+
+[yarn_build, yarn_test, yarn_start, yarn_lint]*.dependsOn yarn
+
+[yarn_build, yarn_test]*.inputs*.files(
+  'e2e/',
+  'node_modules',
+  'src',
+  '.angular-cli.json',
+  'package.json',
+  'protractor.conf.js',
+  'tsconfig.json',
+  'tslint.json'
+)
+
+yarn_lint {
+  inputs.file('package.json')
+  outputs.files(
+    '.angular-cli.json',
+    'package.json',
+    'protractor.conf.js',
+    'tsconfig.json',
+    'tslint.json'
+  )
+  outputs.dirs(
+    'e2e/',
+    'src/'
+  )
+}
+
+yarn_build {
+  dependsOn yarn_lint
+  outputs.dir('dist')
+}
+
+yarn_test {
+  inputs.property('BROWSER', System.env.KARMA_BROWSER ?: 'PhantomJS')
+  inputs.file('karma.conf.js')
+  outputs.dir('coverage')
+}
