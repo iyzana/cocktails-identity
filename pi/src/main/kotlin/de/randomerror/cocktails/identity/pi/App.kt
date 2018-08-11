@@ -1,20 +1,18 @@
 package de.randomerror.cocktails.identity.pi
 
 fun main(args: Array<String>) {
-    var person: Int? = null
+    var lastPerson: Int? = null
 
-    registerPersonListener { id ->
-        person = id
-        sendMayDrink(true)
+    onPersonScanned { person ->
+        lastPerson = person
+        sendMayDrink(allOrdersFor(person).size < 3)
     }
 
-    registerOrderListener { id ->
-        person?.let { person ->
-            saveOrder(person, id)
+    onOrderReceived { order ->
+        lastPerson?.let { person ->
+            saveOrder(CocktailOrder(person, order))
         }
+        lastPerson = null
     }
 }
 
-fun saveOrder(person: Int, order: Int) {
-
-}

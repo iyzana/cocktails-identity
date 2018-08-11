@@ -4,8 +4,8 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import kotlin.concurrent.thread
 
-fun registerPersonListener(callback: (Int) -> Unit) {
-    thread {
+fun onPersonScanned(callback: (Int) -> Unit) {
+    thread(isDaemon = false) {
         BufferedReader(InputStreamReader(System.`in`)).lines()
             .map { Integer.parseInt(it) }
             .forEach { callback(it) }

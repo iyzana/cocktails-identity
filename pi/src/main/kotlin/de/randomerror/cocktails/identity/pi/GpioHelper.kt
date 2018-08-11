@@ -25,7 +25,7 @@ fun sendMayDrink(mayDrink: Boolean) {
     mayDrinkPulsePin.pulse(20)
 }
 
-fun registerOrderListener(callback: (Int) -> Unit) {
+fun onOrderReceived(callback: (Int) -> Unit) {
     orderedPulsePin.addListener(GpioPinListenerDigital { event ->
         if (event.edge == RISING) {
             val id = toInt(
