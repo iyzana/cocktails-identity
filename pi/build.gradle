@@ -11,13 +11,16 @@ mainClassName = 'de.randomerror.cocktails.identity.pi.AppKt'
 
 repositories {
     jcenter()
+    maven { // pi4j snapshot repo
+        url 'https://oss.sonatype.org/content/groups/public'
+    }
 }
 
 dependencies {
     compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     compile 'com.github.kittinunf.fuel:fuel:1.15.0'
     compile 'com.github.kittinunf.fuel:fuel-gson:1.15.0'
-    compile 'com.pi4j:pi4j-core:1.1'
+    compile 'com.pi4j:pi4j-core:1.2-SNAPSHOT'
     compile 'org.hibernate:hibernate-core:5.3.4.Final'
     compile 'com.h2database:h2:1.4.197'
 }
