@@ -3,7 +3,7 @@ package de.randomerror.cocktails.identity.pi
 fun main(args: Array<String>) {
     dbTransaction { } // initialize db immediately
 
-    var lastPerson: Int? = null
+    var lastPerson: String? = null
 
     onPersonScanned { person ->
         lastPerson = person

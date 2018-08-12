@@ -9,6 +9,7 @@ private val db: Session = Configuration()
     .setProperty("hibernate.connection.url", "jdbc:h2:./cocktails-identity")
     .setProperty("hibernate.hbm2ddl.auto", "update")
     .addAnnotatedClass(CocktailOrder::class.java)
+    .addAnnotatedClass(PersonName::class.java)
     .buildSessionFactory()
     .openSession()
 
