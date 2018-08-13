@@ -4,6 +4,11 @@ import com.beust.klaxon.Klaxon
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.httpPost
 import com.github.kittinunf.result.Result
+import de.randomerror.cocktails.identity.pi.DrinkAllowance.ALL
+import de.randomerror.cocktails.identity.pi.DrinkAllowance.LEFT1
+import de.randomerror.cocktails.identity.pi.DrinkAllowance.LEFT2
+import de.randomerror.cocktails.identity.pi.DrinkAllowance.LEFT3
+import de.randomerror.cocktails.identity.pi.DrinkAllowance.NONE
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -26,7 +31,7 @@ fun main(args: Array<String>) {
         logger.info("sending may-drink state")
 
         lastPerson = person
-        sendMayDrink(allOrdersFor(person).size < 3)
+        sendMayDrink(computeDrinkAllowance(person))
     }
 
     onOrderReceived { order ->
@@ -44,8 +49,29 @@ fun main(args: Array<String>) {
         logger.info("person done")
 
         lastPerson = null
+        sendKeepAlive()
     }
 }
+
+fun computeDrinkAllowance(person: String): DrinkAllowance {
+    val number = person.toIntOrNull() ?: return NONE
+
+    return when (number) {
+        in 0..99 -> ALL
+        in 100..199 -> NONE
+        in 200..499 -> ALL
+        in 500..599 -> remainingTeenDrinkAllowance(person)
+        else -> NONE
+    }
+}
+
+fun remainingTeenDrinkAllowance(person: String) =
+    when (allOrdersFor(person).size) {
+        0 -> LEFT3
+        1 -> LEFT2
+        2 -> LEFT1
+        else -> NONE
+    }
 
 fun syncOrderDbs() = synchronized(syncLock) {
     logger.info("trying to sync dbs")
