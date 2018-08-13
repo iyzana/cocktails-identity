@@ -1,0 +1,6 @@
+<div class="h2">Deine Bestellungen</div>
+<ol class="list-group">
+  <li class="list-group-item" *ngFor="let order of (orders$ | async)">
+    {{ order.cocktail }}
+  </li>
+</ol>

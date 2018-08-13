@@ -1,0 +1,22 @@
+<form #personForm="ngForm" class="align-self-center centered-form" (ngSubmit)="savePersonData()">
+  <div class="form-group">
+    <label for="personId" class="h4 form-group">Was ist deine Zahl?</label>
+    <input id="personId" type="number" name="personId" minlength="13" required
+           [(ngModel)]="personId" class="form-control" #name="ngModel" autofocus
+           [ngClass]="{ 'is-invalid' : ((!name.valid || idTooShort()) && !name.pristine) }">
+    <div class="small">
+      Gib hier die Zahl von deinem Armband ein
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="personName" class="h4 form-group">Wie heißt du?</label>
+    <input id="personName" type="text" name="personName"
+           [(ngModel)]="personName" class="form-control">
+    <div class="small">
+      optional
+    </div>
+  </div>
+  <button [disabled]="!personForm.form.valid || idTooShort()" type="submit" class="btn btn-block btn-outline-primary">
+    <fa-icon [icon]="faArrowRight"></fa-icon> Los geht's!
+  </button>
+</form>
