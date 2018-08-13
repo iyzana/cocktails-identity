@@ -1,7 +1,7 @@
 <form #personForm="ngForm" class="align-self-center centered-form" (ngSubmit)="savePersonData()">
   <div class="form-group">
     <label for="personId" class="h4 form-group">Was ist deine Zahl?</label>
-    <input id="personId" type="number" name="personId" minlength="13" required
+    <input id="personId" type="number" name="personId" required
            [(ngModel)]="personId" class="form-control" #name="ngModel" autofocus
            [ngClass]="{ 'is-invalid' : ((!name.valid || idTooShort()) && !name.pristine) }">
     <div class="small">

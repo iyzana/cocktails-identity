@@ -23,6 +23,6 @@ export class IdInputComponent implements OnInit {
   }
 
   idTooShort() {
-    return `${this.personId}`.length < 13;
+    return `${this.personId}`.length < 2;
   }
 }
