@@ -12,12 +12,9 @@ import { CocktailDto } from '../shared/cocktail-dto';
 export class OrderListComponent implements OnInit {
   orders$: Observable<CocktailDto[]>;
 
-  constructor(private route: ActivatedRoute) {
-    console.log('in constructor');
-  }
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
-    console.log('in oninit');
     this.orders$ = this.route.data.pipe(pluck('orders'));
   }
 }

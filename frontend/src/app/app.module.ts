@@ -6,8 +6,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { RouterModule } from '@angular/router';
 import { IdInputComponent } from './id-input/id-input.component';
 import { FormsModule } from '@angular/forms';
-import { OrderListComponent } from './cocktail-list/order-list.component';
-import { OrderListResolverService } from './cocktail-list/order-list-resolver.service';
+import { OrderListComponent } from './order-list/order-list.component';
+import { OrderListResolverService } from './order-list/order-list-resolver.service';
 import { HttpClientModule } from '@angular/common/http';
 import { OrderGuard } from './shared/order-guard.service';
 

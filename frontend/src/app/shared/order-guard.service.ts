@@ -21,7 +21,6 @@ export class OrderGuard implements CanActivate {
       this.router.navigate(['/']);
       return false;
     } else {
-      console.log('yes');
       return true;
     }
   }

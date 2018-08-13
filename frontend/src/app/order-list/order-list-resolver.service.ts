@@ -10,7 +10,6 @@ export class OrderListResolverService implements Resolve<CocktailDto[]> {
   constructor(private http: HttpClient) {}
 
   resolve(): Observable<CocktailDto[]> {
-    console.log('in resolver');
     const person = localStorage.getItem('cocktails.identity.id');
 
     return this.http
