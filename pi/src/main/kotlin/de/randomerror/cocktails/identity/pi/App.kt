@@ -20,6 +20,11 @@ fun main(args: Array<String>) {
     onPersonScanned { person ->
         logger.info("person scanned: $person")
 
+        if (lastPerson != null)
+            return@onPersonScanned
+
+        logger.info("sending may-drink state")
+
         lastPerson = person
         sendMayDrink(allOrdersFor(person).size < 3)
     }
@@ -27,17 +32,23 @@ fun main(args: Array<String>) {
     onOrderReceived { order ->
         logger.info("order received: $order")
 
-        lastPerson?.let { person ->
-            lastPerson = null
+        val person = lastPerson ?: return@onOrderReceived
 
-            saveOrder(CocktailOrder(person, order))
-            syncOrderDbs()
-        }
+        logger.info("saving order")
+
+        saveOrder(CocktailOrder(person, order))
+        syncOrderDbs()
+    }
+
+    onPersonDone {
+        logger.info("person done")
+
+        lastPerson = null
     }
 }
 
 fun syncOrderDbs() = synchronized(syncLock) {
-    logger.info("try syncing dbs")
+    logger.info("trying to sync dbs")
     val unsyncedOrders = allUnsynced()
 
     val (_, _, result) = "/saveOrders".httpPost()
@@ -52,10 +63,10 @@ fun syncOrderDbs() = synchronized(syncLock) {
                 .onEach { dbTransaction { evict(it) } }
                 .map { it.copy(synced = true) }
                 .also { saveAllOrders(it) }
-            logger.info("sync successful")
+            logger.info("db sync successful")
         }
         is Result.Failure -> {
-            logger.info("sync failed")
+            logger.info("db sync failed")
         }
     }
 }
