@@ -3,3 +3,7 @@
 build/
 *.iml
 *.db
+
+# language server files
+META-INF/
+de/

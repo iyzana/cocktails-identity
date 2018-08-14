@@ -28,10 +28,12 @@ fun main(args: Array<String>) {
         if (lastPerson != null)
             return@onPersonScanned
 
-        logger.info("sending may-drink state")
-
         lastPerson = person
-        sendMayDrink(computeDrinkAllowance(person))
+
+        val allowance = computeDrinkAllowance(person) ?: return@onPersonScanned
+
+        logger.info("sending may-drink state")
+        sendMayDrink(allowance)
     }
 
     onOrderReceived { order ->
@@ -53,15 +55,15 @@ fun main(args: Array<String>) {
     }
 }
 
-fun computeDrinkAllowance(person: String): DrinkAllowance {
-    val number = person.toIntOrNull() ?: return NONE
-
+fun computeDrinkAllowance(person: String): DrinkAllowance? {
+    val number = person.toIntOrNull() ?: return null
+    
     return when (number) {
         in 0..99 -> ALL
         in 100..199 -> NONE
         in 200..499 -> ALL
         in 500..599 -> remainingTeenDrinkAllowance(person)
-        else -> NONE
+        else -> null
     }
 }
 
