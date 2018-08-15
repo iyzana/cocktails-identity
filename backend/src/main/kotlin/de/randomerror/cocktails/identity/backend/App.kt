@@ -1,6 +1,8 @@
 package de.randomerror.cocktails.identity.backend
 
 import com.beust.klaxon.Klaxon
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import spark.Request
 import spark.Response
 import spark.Spark
@@ -13,6 +15,7 @@ import spark.kotlin.port
 import spark.kotlin.post
 
 val json = Klaxon()
+val logger: Logger = LoggerFactory.getLogger("backend-main")
 
 fun main(args: Array<String>) {
     dbTransaction { } // initialize db immediately
@@ -27,28 +30,32 @@ fun main(args: Array<String>) {
         val orders = json.parseArray<CocktailOrder>(request.body()) ?: throw halt(400)
         saveAllOrders(orders)
 
+        logger.info("saved ${orders.size} orders")
+
         json.toJsonString("ok")
     }
 
     get("/orders/:person") {
         val person = request.params("person")
 
+        logger.info("loading orders for $person")
+
         json.toJsonString(allOrdersFor(person))
     }
 
-    get("/name/:person") {
-        val person = request.params("person")
-
-        getNameFor(person)?.name ?: throw halt(404)
-    }
-
-    post("/name/:person/:name") {
-        val person = request.params("person")
-        val name = request.params("name")
-
-        setNameFor(person, name)
-        "ok"
-    }
+//    get("/name/:person") {
+//        val person = request.params("person")
+//
+//        getNameFor(person)?.name ?: throw halt(404)
+//    }
+//
+//    post("/name/:person/:name") {
+//        val person = request.params("person")
+//        val name = request.params("name")
+//
+//        setNameFor(person, name)
+//        "ok"
+//    }
 
     handleErrors()
 }
@@ -72,7 +79,6 @@ fun handleErrors() {
         """.trimIndent()
     }
 
-//    exception<NumberFormatException>()
     exception<NumberFormatException> { ex, _, _ ->
         """
             {
