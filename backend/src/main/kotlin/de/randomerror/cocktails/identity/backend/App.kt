@@ -9,12 +9,15 @@ import spark.kotlin.get
 import spark.kotlin.halt
 import spark.kotlin.internalServerError
 import spark.kotlin.notFound
+import spark.kotlin.port
 import spark.kotlin.post
 
 val json = Klaxon()
 
 fun main(args: Array<String>) {
     dbTransaction { } // initialize db immediately
+
+    port(28472)
 
     after {
         response.type("application/json")
