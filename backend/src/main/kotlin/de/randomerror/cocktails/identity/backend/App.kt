@@ -62,32 +62,30 @@ fun main(args: Array<String>) {
 
 fun handleErrors() {
     notFound {
-        """
-            {
-                "error": "not found",
-                "message": "the route ${request.requestMethod()} ${request.pathInfo()} does not exist"
-            }
-        """.trimIndent()
+        json.toJsonString(
+            Error(
+                "not found",
+                "the route ${request.requestMethod()} ${request.pathInfo()} does not exist"
+            )
+        )
     }
 
     internalServerError {
-        """
-            {
-                "error": "internal error",
-                "message": "unknown error"
-            }
-        """.trimIndent()
+        json.toJsonString(
+            Error(
+                "internal error",
+                "unknown cause"
+            )
+        )
     }
 
     exception<NumberFormatException> { ex, _, _ ->
-        """
-            {
-                "error": "invalid number format",
-                "message": ${
-        json.toJsonString("invalid number format ${ex.localizedMessage}")
-        }
-            }
-        """.trimIndent()
+        json.toJsonString(
+            Error(
+                "invalid number format",
+                "invalid number format ${ex.localizedMessage}"
+            )
+        )
     }
 }
 
