@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory
 val json = Klaxon()
 val logger: Logger = LoggerFactory.getLogger("pi-main")
 val syncLock = object {}
+val scanLock = object {}
 
 fun main(args: Array<String>) {
     dbTransaction { } // initialize db immediately
@@ -23,17 +24,20 @@ fun main(args: Array<String>) {
     var lastPerson: String? = null
 
     onPersonScanned { person ->
-        logger.info("person scanned: $person")
+        synchronized(scanLock) {
+            logger.info("person scanned: $person")
 
-        if (lastPerson != null)
-            return@onPersonScanned
+            if (lastPerson != null)
+                return@onPersonScanned
 
-        lastPerson = person
+            val allowance = computeDrinkAllowance(person)
+                    ?: return@onPersonScanned
 
-        val allowance = computeDrinkAllowance(person) ?: return@onPersonScanned
+            lastPerson = person
 
-        logger.info("sending may-drink state")
-        sendMayDrink(allowance)
+            logger.info("sending may-drink state")
+            sendMayDrink(allowance)
+        }
     }
 
     onOrderReceived { order ->
@@ -57,7 +61,7 @@ fun main(args: Array<String>) {
 
 fun computeDrinkAllowance(person: String): DrinkAllowance? {
     val number = person.toIntOrNull() ?: return null
-    
+
     return when (number) {
         in 0..99 -> ALL
         in 100..199 -> NONE
