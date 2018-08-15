@@ -18,7 +18,7 @@ val syncLock = object {}
 
 fun main(args: Array<String>) {
     dbTransaction { } // initialize db immediately
-    FuelManager.instance.basePath = "http://localhost:4567"
+    FuelManager.instance.basePath = "http://cocktails.randomerror.de:28472/"
 
     var lastPerson: String? = null
 
