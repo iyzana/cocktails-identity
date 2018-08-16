@@ -21,28 +21,31 @@ import com.pi4j.io.gpio.event.GpioPinListenerDigital
 
 
 val lock = object {}
-val controller = GpioFactory.getInstance()
+val controller = GpioFactory.getInstance()!!
 
-val mayDrinkPulsePin = controller.provisionDigitalOutputPin(GPIO_15, LOW)
-val mayDrinkValue1Pin = controller.provisionDigitalOutputPin(GPIO_08, LOW)
-val mayDrinkValue2Pin = controller.provisionDigitalOutputPin(GPIO_09, LOW)
-val mayDrinkValue3Pin = controller.provisionDigitalOutputPin(GPIO_07, LOW)
+val mayDrinkPulsePin = controller.provisionDigitalOutputPin(GPIO_15, LOW)!!
+val mayDrinkValue1Pin = controller.provisionDigitalOutputPin(GPIO_08, LOW)!!
+val mayDrinkValue2Pin = controller.provisionDigitalOutputPin(GPIO_09, LOW)!!
+val mayDrinkValue3Pin = controller.provisionDigitalOutputPin(GPIO_07, LOW)!!
 
-val orderedPulsePin = controller.provisionDigitalInputPin(GPIO_00, PULL_DOWN)
-val orderedValuePin1 = controller.provisionDigitalInputPin(GPIO_02, PULL_DOWN)
-val orderedValuePin2 = controller.provisionDigitalInputPin(GPIO_03, PULL_DOWN)
-val orderedValuePin3 = controller.provisionDigitalInputPin(GPIO_12, PULL_DOWN)
-val orderedValuePin4 = controller.provisionDigitalInputPin(GPIO_13, PULL_DOWN)
-val orderReceivedPin = controller.provisionDigitalOutputPin(GPIO_14, LOW)
+val orderedPulsePin = controller.provisionDigitalInputPin(GPIO_00, PULL_DOWN)!!
+val orderedValuePin1 = controller.provisionDigitalInputPin(GPIO_02, PULL_DOWN)!!
+val orderedValuePin2 = controller.provisionDigitalInputPin(GPIO_03, PULL_DOWN)!!
+val orderedValuePin3 = controller.provisionDigitalInputPin(GPIO_12, PULL_DOWN)!!
+val orderedValuePin4 = controller.provisionDigitalInputPin(GPIO_13, PULL_DOWN)!!
+val orderReceivedPin = controller.provisionDigitalOutputPin(GPIO_14, LOW)!!
 
-val resetPulsePin = controller.provisionDigitalInputPin(GPIO_04, PULL_DOWN)
+val resetPulsePin = controller.provisionDigitalInputPin(GPIO_04, PULL_DOWN)!!
 
 fun sendMayDrink(allowance: DrinkAllowance) = synchronized(lock) {
-    val pinStates = toBoolArray(allowance.ordinal + 1, 3)
-    mayDrinkValue1Pin.setState(pinStates[2])
-    mayDrinkValue2Pin.setState(pinStates[1])
-    mayDrinkValue3Pin.setState(pinStates[0])
-    mayDrinkPulsePin.pulse(15)
+    val pinStates = toStateArray(allowance.ordinal + 1, 3)
+    mayDrinkValue1Pin.state = pinStates[2]
+    mayDrinkValue2Pin.state = pinStates[1]
+    mayDrinkValue3Pin.state = pinStates[0]
+    mayDrinkPulsePin.pulse(15, true)
+    mayDrinkValue1Pin.state = LOW
+    mayDrinkValue2Pin.state = LOW
+    mayDrinkValue3Pin.state = LOW
 }
 
 fun onOrderReceived(callback: (Int) -> Unit) {
@@ -53,7 +56,7 @@ fun onOrderReceived(callback: (Int) -> Unit) {
                 orderedValuePin3.state,
                 orderedValuePin2.state,
                 orderedValuePin1.state
-            )
+            ) + 1
 
             callback(id)
             orderReceivedPin.pulse(15)
@@ -76,12 +79,12 @@ fun sendKeepAlive(): Unit = synchronized(lock) {
     orderReceivedPin.pulse(15)
 }
 
-private fun toBoolArray(value: Int, size: Int): List<Boolean> {
+private fun toStateArray(value: Int, size: Int): List<PinState> {
     return Integer.toBinaryString(value)
         .trimStart('0')
         .padStart(size, '0')
         .toCharArray()
-        .map{ it == '1' }
+        .map { if (it == '1') HIGH else LOW }
         .toList()
 }
 
