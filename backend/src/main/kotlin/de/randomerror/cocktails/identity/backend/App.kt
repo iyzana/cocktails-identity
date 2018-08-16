@@ -1,5 +1,7 @@
 package de.randomerror.cocktails.identity.backend
 
+import com.beust.klaxon.Converter
+import com.beust.klaxon.JsonValue
 import com.beust.klaxon.Klaxon
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -13,8 +15,17 @@ import spark.kotlin.internalServerError
 import spark.kotlin.notFound
 import spark.kotlin.port
 import spark.kotlin.post
+import java.time.LocalDateTime
 
 val json = Klaxon()
+    .converter(object: Converter {
+        override fun canConvert(cls: Class<*>) = cls == LocalDateTime::class.java
+
+        override fun fromJson(jv: JsonValue) = LocalDateTime.parse(jv.string)
+
+        override fun toJson(value: Any) = """"${(value as LocalDateTime)}""""
+    })
+
 val logger: Logger = LoggerFactory.getLogger("backend-main")
 
 fun main(args: Array<String>) {

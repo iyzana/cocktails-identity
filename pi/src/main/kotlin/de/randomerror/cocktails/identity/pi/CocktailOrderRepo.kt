@@ -1,5 +1,7 @@
 package de.randomerror.cocktails.identity.pi
 
+import java.time.LocalDateTime
+import java.time.LocalDateTime.now
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
@@ -8,6 +10,7 @@ import javax.persistence.Id
 data class CocktailOrder(
     val person: String,
     val cocktail: Int,
+    val orderTime: LocalDateTime = now(),
     val synced: Boolean = false,
     @Id
     @GeneratedValue
