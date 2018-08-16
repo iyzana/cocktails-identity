@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "http://cocktails.randomerror.de:28472/",
+    "target": "http://localhost:28472/",
     "secure": true,
     "pathRewrite": {
       "^/api": ""

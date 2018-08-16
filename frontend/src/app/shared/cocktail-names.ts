@@ -1,0 +1,18 @@
+export const cocktailNames = {
+  1: 'Desire',
+  2: '43er Kiss',
+  3: 'Blue Kolibri',
+  4: 'Batida Kiba',
+  5: 'Swimming Pool',
+  6: 'Cream 43',
+  7: 'Sex on the Beach',
+  8: 'Long Island Ice Tea',
+  9: 'Tequila Sunrise',
+  10: 'Pina Colada',
+  11: 'Cuba Libre',
+  12: 'Alex',
+  13: 'Alex (alkoholfrei)',
+  14: 'KIBA',
+  15: 'Sweet Orange',
+  16: 'Beach Beauty',
+};

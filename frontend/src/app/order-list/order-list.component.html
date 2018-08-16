@@ -1,6 +1,6 @@
 <div class="h3">Deine Bestellungen</div>
 <ol class="list-group">
   <li class="list-group-item" *ngFor="let order of (orders$ | async)">
-    {{ order.cocktail }}
+    {{ cocktailNames[order.cocktail] }}
   </li>
 </ol>

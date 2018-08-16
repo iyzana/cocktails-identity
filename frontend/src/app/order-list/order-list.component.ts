@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { pluck } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { CocktailDto } from '../shared/cocktail-dto';
+import { cocktailNames } from '../shared/cocktail-names';
 
 @Component({
   selector: 'app-cocktail-list',
@@ -11,6 +12,7 @@ import { CocktailDto } from '../shared/cocktail-dto';
 })
 export class OrderListComponent implements OnInit {
   orders$: Observable<CocktailDto[]>;
+  cocktailNames = cocktailNames;
 
   constructor(private route: ActivatedRoute) {}
 
