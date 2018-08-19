@@ -1,5 +1,20 @@
 @import '~bootstrap/scss/bootstrap';
-@import '~bootstrap/scss/functions';
-@import '~bootstrap/scss/variables';
-@import '~bootstrap/scss/mixins';
-@import '~bootstrap/scss/navbar';
+
+body {
+  background-color: #26272C !important;
+  color: #fbf7f1 !important;
+}
+
+input {
+  background-color: #26272C !important;
+  color: #fbf7f1 !important;
+
+  & .is-valid {
+    border-color: #777 !important;
+  }
+}
+
+.list-group-item {
+  background-color: #26272C !important;
+  border-color: #777 !important;
+}

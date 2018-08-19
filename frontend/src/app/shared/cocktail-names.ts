@@ -8,7 +8,7 @@ export const cocktailNames = {
   7: 'Sex on the Beach',
   8: 'Long Island Ice Tea',
   9: 'Tequila Sunrise',
-  10: 'Pina Colada',
+  10: 'Piña Colada',
   11: 'Cuba Libre',
   12: 'Alex',
   13: 'Alex (alkoholfrei)',
