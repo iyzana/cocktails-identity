@@ -19,7 +19,7 @@ export class IdInputComponent implements OnInit {
   savePersonData() {
     localStorage.setItem('cocktails.identity.id', this.personId);
     localStorage.setItem('cocktails.identity.name', this.personName);
-    this.router.navigate(['orders']);
+    this.router.navigate(['']);
   }
 
   idTooShort() {

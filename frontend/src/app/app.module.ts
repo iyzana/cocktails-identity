@@ -13,12 +13,13 @@ import { OrderGuard } from './shared/order-guard.service';
 
 const routes = [
   {
-    path: 'orders',
+    path: '',
     component: OrderListComponent,
     canActivate: [OrderGuard],
     resolve: { orders: OrderListResolverService },
+    pathMath: 'full'
   },
-  { path: '', component: IdInputComponent, pathMath: 'full' },
+  { path: 'id', component: IdInputComponent },
 ];
 
 @NgModule({

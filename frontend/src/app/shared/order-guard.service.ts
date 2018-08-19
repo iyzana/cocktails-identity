@@ -18,7 +18,7 @@ export class OrderGuard implements CanActivate {
     state: RouterStateSnapshot,
   ): Observable<boolean> | Promise<boolean> | boolean {
     if (localStorage.getItem('cocktails.identity.id') == null) {
-      this.router.navigate(['/']);
+      this.router.navigate(['/id']);
       return false;
     } else {
       return true;
