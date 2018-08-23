@@ -17,6 +17,7 @@ import com.pi4j.io.gpio.RaspiPin.GPIO_12
 import com.pi4j.io.gpio.RaspiPin.GPIO_13
 import com.pi4j.io.gpio.RaspiPin.GPIO_14
 import com.pi4j.io.gpio.RaspiPin.GPIO_15
+import com.pi4j.io.gpio.RaspiPin.GPIO_16
 import com.pi4j.io.gpio.event.GpioPinListenerDigital
 
 
@@ -33,7 +34,8 @@ val orderedValuePin1 = controller.provisionDigitalInputPin(GPIO_02, PULL_DOWN)!!
 val orderedValuePin2 = controller.provisionDigitalInputPin(GPIO_03, PULL_DOWN)!!
 val orderedValuePin3 = controller.provisionDigitalInputPin(GPIO_12, PULL_DOWN)!!
 val orderedValuePin4 = controller.provisionDigitalInputPin(GPIO_13, PULL_DOWN)!!
-val orderReceivedPin = controller.provisionDigitalOutputPin(GPIO_14, LOW)!!
+val orderedValuePin5 = controller.provisionDigitalInputPin(GPIO_14, PULL_DOWN)!!
+val orderReceivedPin = controller.provisionDigitalOutputPin(GPIO_16, LOW)!!
 
 val resetPulsePin = controller.provisionDigitalInputPin(GPIO_04, PULL_DOWN)!!
 
@@ -52,6 +54,7 @@ fun onOrderReceived(callback: (Int) -> Unit) {
     orderedPulsePin.addListener(GpioPinListenerDigital { event ->
         if (event.edge == RISING) {
             val id = toInt(
+                orderedValuePin5.state,
                 orderedValuePin4.state,
                 orderedValuePin3.state,
                 orderedValuePin2.state,
